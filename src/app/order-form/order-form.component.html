@@ -5,7 +5,7 @@
       </div>
     </div>
   
-    <form [formGroup]="bookingForm" class="mt-4">
+    <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()" class="mt-4">
       <!-- Datos de la Empresa -->
       <div class="card mb-4">
         <div class="card-header bg-primary text-white">
@@ -39,6 +39,9 @@
             <label class="form-label required">Lugar del Evento</label>
             <select class="form-select" formControlName="venueId">
               <!-- Opciones de lugar aquí -->
+              @for (venue of venues; track $index) {
+                <option [value]="venue.id">{{venue.name}}</option>
+            }
             </select>
           </div>
   
@@ -74,11 +77,12 @@
       <div formArrayName="services" class="card mb-4">
         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
           <h3 class="h5 mb-0">Servicios Adicionales</h3>
-          <button type="button" class="btn btn-light btn-sm">
+          <button type="button" class="btn btn-light btn-sm" (click)="addService()">
             + Agregar Servicio
           </button>
         </div>
-        <div class="card-body">
+        
+        <div *ngFor="let serviceForm of services.controls; let i = index" [formGroupName]="i" class="card-body">
           <!-- Estructura de servicios adicionales -->
           <div class="border rounded p-3 mb-3 position-relative">
             <button type="button" class="btn-close position-absolute top-0 end-0 m-2"></button>
@@ -87,7 +91,9 @@
                 <div class="mb-3">
                   <label class="form-label required">Tipo de Servicio</label>
                   <select class="form-select" formControlName="serviceId">
-                    <!-- Opciones de servicio aquí -->
+                    @for (service of serviceList; track $index) {
+                        <option [value]="service.id">{{service.name}}</option>
+                    }
                   </select>
                 </div>
               </div>

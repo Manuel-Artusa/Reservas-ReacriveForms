@@ -13,5 +13,8 @@ export class BookingsService {
   getBookings():Observable<Booking[]>{
     return this.http.get<Booking[]>(this.url)
   }
+  postBooking(booking:Booking):Observable<Booking>{
+    return this.http.post<Booking>(this.url,booking)
+  }
   constructor() { }
 }

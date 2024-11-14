@@ -18,9 +18,10 @@ export class OrderListComponent implements OnInit {
 
   bookingService: BookingsService = inject(BookingsService)
   venueService:VenueService = inject(VenueService)
+  venues:Venue[] = []
   bookings:Booking[] = []
   filteredBookings:Booking[] =[]
-  venues:Venue[] = []
+  
   searchTerm:string =  '';
   ngOnInit(): void {
     this.loadBookings()

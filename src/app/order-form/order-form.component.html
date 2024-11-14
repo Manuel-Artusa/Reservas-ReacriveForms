@@ -5,7 +5,7 @@
       </div>
     </div>
   
-    <form class="mt-4">
+    <form [formGroup]="bookingForm" class="mt-4">
       <!-- Datos de la Empresa -->
       <div class="card mb-4">
         <div class="card-header bg-primary text-white">
@@ -14,17 +14,17 @@
         <div class="card-body">
           <div class="mb-3">
             <label class="form-label required">Nombre de la Empresa</label>
-            <input type="text" class="form-control" placeholder="Ingrese el nombre de la empresa">
+            <input type="text" class="form-control" placeholder="Ingrese el nombre de la empresa" formControlName="companyName">
           </div>
   
           <div class="mb-3">
             <label class="form-label required">Email Corporativo</label>
-            <input type="email" class="form-control" placeholder="ejemplo@empresa.com">
+            <input type="email" class="form-control" placeholder="ejemplo@empresa.com"  formControlName="companyEmail">
           </div>
   
           <div class="mb-3">
             <label class="form-label required">Teléfono de Contacto</label>
-            <input type="tel" class="form-control" placeholder="+54 11 1234-5678">
+            <input type="tel" class="form-control" placeholder="+54 11 1234-5678" formControlName="contactPhone">
           </div>
         </div>
       </div>
@@ -37,7 +37,7 @@
         <div class="card-body">
           <div class="mb-3">
             <label class="form-label required">Lugar del Evento</label>
-            <select class="form-select">
+            <select class="form-select" formControlName="venueId">
               <!-- Opciones de lugar aquí -->
             </select>
           </div>
@@ -46,32 +46,32 @@
             <div class="col-md-4">
               <div class="mb-3">
                 <label class="form-label required">Fecha</label>
-                <input type="date" class="form-control">
+                <input type="date" class="form-control" formControlName="eventDate">
               </div>
             </div>
             <div class="col-md-4">
               <div class="mb-3">
                 <label class="form-label required">Hora de Inicio</label>
-                <input type="time" class="form-control">
+                <input type="time" class="form-control" formControlName="startTime">
               </div>
             </div>
             <div class="col-md-4">
               <div class="mb-3">
                 <label class="form-label required">Hora de Finalización</label>
-                <input type="time" class="form-control">
+                <input type="time" class="form-control" formControlName="endTime">
               </div>
             </div>
           </div>
   
           <div class="mb-3">
             <label class="form-label required">Cantidad Total de Personas</label>
-            <input type="number" class="form-control">
+            <input type="number" class="form-control" formControlName="totalPeople">
           </div>
         </div>
       </div>
   
       <!-- Servicios Adicionales -->
-      <div class="card mb-4">
+      <div formArrayName="services" class="card mb-4">
         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
           <h3 class="h5 mb-0">Servicios Adicionales</h3>
           <button type="button" class="btn btn-light btn-sm">
@@ -86,7 +86,7 @@
               <div class="col-md-6">
                 <div class="mb-3">
                   <label class="form-label required">Tipo de Servicio</label>
-                  <select class="form-select">
+                  <select class="form-select" formControlName="serviceId">
                     <!-- Opciones de servicio aquí -->
                   </select>
                 </div>
@@ -95,7 +95,7 @@
               <div class="col-md-6">
                 <div class="mb-3">
                   <label class="form-label required">Cantidad de Personas</label>
-                  <input type="number" class="form-control">
+                  <input type="number" class="form-control" formControlName="quantity">
                 </div>
               </div>
             </div>
@@ -104,13 +104,13 @@
               <div class="col-md-6">
                 <div class="mb-3">
                   <label class="form-label required">Hora de Inicio</label>
-                  <input type="time" class="form-control">
+                  <input type="time" class="form-control" formControlName="startTime">
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="mb-3">
                   <label class="form-label required">Hora de Finalización</label>
-                  <input type="time" class="form-control">
+                  <input type="time" class="form-control" formControlName="endTime" >
                 </div>
               </div>
             </div>

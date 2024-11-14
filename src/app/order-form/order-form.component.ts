@@ -23,6 +23,8 @@ export class OrderFormComponent implements OnInit{
 
   bookingForm:FormGroup
   totalAmount: number =0;
+  discount: number = 0;
+  totalWhitDiscount : number = 0;
 
   constructor(private fb:FormBuilder){ 
     this.bookingForm = this.fb.group({
@@ -41,6 +43,7 @@ export class OrderFormComponent implements OnInit{
   ngOnInit(): void {
     this.loadServices()
     this.loadVenues()
+    this.bookingForm.valueChanges.subscribe(()=> this.calculateTotals())
   }
   loadServices() {
     this.serviceService.getServices().subscribe({
@@ -70,10 +73,56 @@ export class OrderFormComponent implements OnInit{
       endTime:['',Validators.required],
   })
   this.services.push(serviceGroup)
-
-  }
+  this.calculateTotals()
+   
+  } 
   get services():FormArray{
     return this.bookingForm.get('services') as FormArray
+  }
+  removeService(index:number){
+    this.services.removeAt(index)
+    this.calculateTotals()
+  }
+  generateOrderCode():string{
+    const email = this.bookingForm.get('companyEmail')?.value
+    const date = Date.now().toString().slice(-5)
+    const partEmail = email.substring(0,3).toUpperCase();
+    
+
+    return partEmail+date
+  }
+  calculateTotals(){
+    let total  = 0
+    const totalPeople = this.bookingForm.get('totalPeople')?.value
+
+    const vuenueId = this.bookingForm.get('venueId')?.value
+    const venue = this.venues.find(v => v.id === vuenueId)
+    const startTime = this.bookingForm.get('startTime')?.value
+    const endTime = this.bookingForm.get('endTime')?.value
+
+    if(venue && startTime && endTime){     
+      const duration = calculateDurationInHours(startTime,endTime)
+      total += duration *venue.pricePerHour
+    }
+
+    this.services.controls.forEach(serviceGroup => {
+      const serviceId = serviceGroup.get('serviceId')?.value
+      const quantity = serviceGroup.get('quantity')?.value
+      const service = this.serviceList.find(s => s.id === serviceId)
+
+      if(service){
+        if(quantity >= service.minimumPeople){
+          total += (service.pricePerPerson *quantity) 
+        }
+      }
+    })
+    this.totalAmount = total
+    if(totalPeople >= 100){
+      this.discount = total * 0.15
+      this.totalWhitDiscount = total - this.discount
+    }else{
+      this.discount = 0 
+    }
   }
   onSubmit():void{
     console.log(this.bookingForm.value)
@@ -86,7 +135,7 @@ export class OrderFormComponent implements OnInit{
       endTime: s.endTime
     }))
     const booking:Booking = {
-    bookingCode : '',
+    bookingCode : this.generateOrderCode(),
     companyName: formValue.companyName,
     companyEmail: formValue.companyEmail,
     contactPhone: formValue.contactPhone,
@@ -96,7 +145,7 @@ export class OrderFormComponent implements OnInit{
     endTime: formValue.endTime,
     totalPeople: formValue.totalPeople,
     services: serviceBooking,
-    totalAmount: this.totalAmount,
+    totalAmount: this.totalWhitDiscount,
     status: 'pending' ,
     createdAt: new Date(),
     }
@@ -115,4 +164,16 @@ export class OrderFormComponent implements OnInit{
     })
   }
   
+}
+function calculateDurationInHours(startTime:string, endTime:string) {
+  const [startHours, startMinutes] = startTime.split(":").map(Number);
+  const [endHours, endMinutes] = endTime.split(":").map(Number);
+
+  const startInMinutes = startHours * 60 + startMinutes;
+  const endInMinutes = endHours * 60 + endMinutes;
+
+  const durationInMinutes = endInMinutes - startInMinutes;
+  const durationInHours = durationInMinutes / 60;
+
+  return durationInHours;
 }

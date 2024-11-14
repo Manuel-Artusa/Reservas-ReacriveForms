@@ -85,7 +85,7 @@
         <div *ngFor="let serviceForm of services.controls; let i = index" [formGroupName]="i" class="card-body">
           <!-- Estructura de servicios adicionales -->
           <div class="border rounded p-3 mb-3 position-relative">
-            <button type="button" class="btn-close position-absolute top-0 end-0 m-2"></button>
+            <button type="button" class="btn-close position-absolute top-0 end-0 m-2" (click)="removeService(i)"></button>
             <div class="row">
               <div class="col-md-6">
                 <div class="mb-3">
@@ -141,7 +141,7 @@
               <h6>Subtotal:</h6>
             </div>
             <div class="col-auto">
-              <h6>$ <!-- Subtotal aquí --></h6>
+              <h6>$ {{totalAmount}}</h6>
             </div>
           </div>
   
@@ -151,7 +151,7 @@
               <small>¡Descuento aplicado por grupo mayor a 100 personas!</small>
             </div>
             <div class="col-auto">
-              <h6>-$ <!-- Descuento aquí --></h6>
+              <h6>-$ {{discount}}</h6>
             </div>
           </div>
   
@@ -162,7 +162,7 @@
               <h5 class="mb-0">Total Final:</h5>
             </div>
             <div class="col-auto">
-              <h5 class="mb-0">$ <!-- Total final aquí --></h5>
+              <h5 class="mb-0">${{totalWhitDiscount}}</h5>
             </div>
           </div>
         </div>

@@ -126,6 +126,7 @@ export class OrderFormComponent implements OnInit{
   }
   onSubmit():void{
     console.log(this.bookingForm.value)
+    // if (this.bookingForm.valid){} encapsulando todo 
     const formValue = this.bookingForm.getRawValue()
     const serviceBooking : BookingService[] = formValue.services.map((s:BookingService)=>({
       serviceId :s.serviceId,

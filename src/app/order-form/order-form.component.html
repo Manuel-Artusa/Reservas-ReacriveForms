@@ -50,6 +50,10 @@
               <div class="mb-3">
                 <label class="form-label required">Fecha</label>
                 <input type="date" class="form-control" formControlName="eventDate">
+                <div *ngIf="bookingForm.get('eventDate')?.invalid && bookingForm.get('eventDate')?.touched" class="text-danger">
+                  <small *ngIf="bookingForm.get('eventDate')?.errors?.['required']">Este campo es requerido.</small>
+                  <small *ngIf="bookingForm.get('eventDate')?.errors?.['notAvailable']">La fecha seleccionada no está disponible.</small>
+                </div>
               </div>
             </div>
             <div class="col-md-4">

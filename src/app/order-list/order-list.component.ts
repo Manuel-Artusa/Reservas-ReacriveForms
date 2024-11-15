@@ -1,5 +1,6 @@
 import { CurrencyPipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-order-list',
@@ -9,6 +10,10 @@ import { Component } from '@angular/core';
   styleUrl: './order-list.component.css'
 })
 export class OrderListComponent {
+  router:Router = inject(Router)
+goForm() {
+  this.router.navigate(['create-booking'])
+}
   getStatusBadgeClass(status?: string): string {
     switch (status) {
       case 'confirmed':
